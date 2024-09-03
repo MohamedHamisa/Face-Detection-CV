@@ -1,32 +1,36 @@
-## pip install opencv-python
+# Install OpenCV
+!pip install opencv-python
 
 import cv2
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-#cascade is an approach that trained on +ve(faces) and -ve(objects and otherr things) I,ages then detects the face and upper body
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
+# Load the pre-trained Haar Cascade Classifier for face detection
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-#Load the Image
+# Load the image
 image = cv2.imread('test image.jpg')
-# convert to rgb
-img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-plt.imshow(img_rgb)
 
-# resize the image
+# Resize the image (optional, depending on your image size)
 image = cv2.resize(image, (400, 600))
 
-# convert to gray scale image
+# Convert the image to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-plt.imshow(gray, cmap='gray')
 
-#Detect Faces
+# Detect faces in the image
 faces = face_cascade.detectMultiScale(gray)
-len(faces)
 
-# diplay the faces in the image
+# Draw rectangles around detected faces
 for (x, y, w, h) in faces:
-    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-cv2.imshow("Faces ",image)
-cv2.waitKey(0)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
+# Convert the image to RGB for display in matplotlib
+img_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+# Display the image with detected faces
+plt.imshow(img_rgb)
+plt.axis('off')  # Hide axes for better visualization
+plt.show()
+
+# Print the number of faces detected
+print(f"Number of faces detected: {len(faces)}")
